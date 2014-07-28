@@ -31,23 +31,26 @@
 	[date-time]
 	(day-map (t/day-of-week date-time)))
 
-(defn parse-lines
-	[data]
-	(let [ rows (rest data) ]
-	(map parse-row rows)))
-
 (defn parse-row
-	[[date systemwide sf rc pa mv sj]]
+	[[date-str & stats]]
+	(let [ride-stats (map read-string stats)]
 		{
-		:date date
-		:day-of-week (day-of-week (parse-date date))
-		:systemwide systemwide
-		:sf sf
-		:rc rc
-		:pa pa
-		:mv mv
-		:sj sj }
+		:date date-str
+		:day-of-week (day-of-week (parse-date date-str))
+		:systemwide (nth ride-stats 0)
+		:sf (nth ride-stats 1)
+		:rc (nth ride-stats 2)
+		:pa (nth ride-stats 3)
+		:mv (nth ride-stats 4)
+		:sj (nth ride-stats 5)})
 )
+
+
+(defn parse-lines
+[data]
+(let [ rows (rest data) ]
+(map parse-row rows)))
+
 
 (defn -main
   "I don't do a whole lot ... yet."
